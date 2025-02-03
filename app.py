@@ -3,19 +3,16 @@ import time
 import pickle
 import streamlit as st
 
-# Load the model and vectorizer
 with open("yt_ai_classifier_model_2.sav", "rb") as f:
     model = pickle.load(f)
 with open("tfidf_vectorizer.sav", "rb") as f:
     tfidf = pickle.load(f)
 
-# Streamlit app
 st.title("YouTube Live Chat Classifier")
 
 API_KEY = "AIzaSyDk6Sv0xXOQyqm78sBVZSVHqrRrZHFwoGA"
 video_url_input = st.text_input("Enter the YouTube video URL:")
 
-# Initialize a session state variable to control the chat monitoring
 if 'monitoring' not in st.session_state:
     st.session_state.monitoring = False
 
@@ -32,7 +29,6 @@ st.markdown(rainbow_line, unsafe_allow_html=True)
 if st.button("Start Chat Monitoring"):
 
     if video_url_input:
-        # Extract VIDEO_ID from the URL
         VIDEO_ID = video_url_input.split('v=')[1].split('&')[0] if 'v=' in video_url_input else video_url_input.split('/')[-1]
 
         video_url = "https://www.googleapis.com/youtube/v3/videos"
@@ -52,16 +48,10 @@ if st.button("Start Chat Monitoring"):
                 "key": API_KEY
             }
 
-            # Start monitoring chat
             st.write("Monitoring live chat...")
-
-            # Create a placeholder for chat messages
             chat_placeholder = st.empty()
-
-            # Initialize a list to store messages
             all_messages = []
-
-            # Set monitoring to True
+            
             st.session_state.monitoring = True
 
             while st.session_state.monitoring:
@@ -70,13 +60,11 @@ if st.button("Start Chat Monitoring"):
                     for item in chat_response["items"]:
                         author = item["authorDetails"]["displayName"]
                         message = item["snippet"]["displayMessage"]
-
-                        # Classifying text
+                        
                         new_text = message
                         text_tfidf = tfidf.transform([new_text])
                         output = model.predict(text_tfidf)
-
-                        # Coloring text based on classification
+                        
                         if output[0] == 0:
                             formatted_message = f"<span style='color:white;'>{author} : <span style='color:red;'>{message}</span></span>"
                         elif output[0] == 1:
@@ -84,16 +72,10 @@ if st.button("Start Chat Monitoring"):
                         elif output[0] == 2:
                             formatted_message = f"<span style='color:white;'>{author} : <span style='color:green;'>{message}</span></span>"
 
-                        # Add the formatted message to the list
                         all_messages.append(formatted_message)
-
-                    # Reverse the order of messages to show the newest on top
                     chat_placeholder.markdown("<br>".join(reversed(all_messages)), unsafe_allow_html=True)
-
-                time.sleep(2)  # Wait before fetching new messages
+                time.sleep(2)  
         else:
             st.error("No live chat available for this video.")
     else:
         st.error("Please enter a valid YouTube video URL.")
-
-# Button to pause the chat monitoring
