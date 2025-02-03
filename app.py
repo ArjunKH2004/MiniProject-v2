@@ -15,6 +15,10 @@ st.title("YouTube Live Chat Classifier")
 API_KEY = "AIzaSyAiggkZTjKRGd_3pYRTJIe-08QOjfnHYgI"
 video_url_input = st.text_input("Enter the YouTube video URL:")
 
+# Initialize a session state variable to control the chat monitoring
+if 'monitoring' not in st.session_state:
+    st.session_state.monitoring = False
+
 if st.button("Start Chat Monitoring"):
     if video_url_input:
         # Extract VIDEO_ID from the URL
@@ -46,7 +50,10 @@ if st.button("Start Chat Monitoring"):
             # Initialize a list to store messages
             all_messages = []
 
-            while True:
+            # Set monitoring to True
+            st.session_state.monitoring = True
+
+            while st.session_state.monitoring:
                 chat_response = requests.get(chat_url, params=chat_params).json()
                 if "items" in chat_response:
                     for item in chat_response["items"]:
@@ -77,3 +84,8 @@ if st.button("Start Chat Monitoring"):
             st.error("No live chat available for this video.")
     else:
         st.error("Please enter a valid YouTube video URL.")
+
+# Button to pause the chat monitoring
+if st.button("Pause Chat Monitoring"):
+    st.session_state.monitoring = False
+    st.write("Chat monitoring paused. Click 'Start Chat Monitoring' to resume.")
