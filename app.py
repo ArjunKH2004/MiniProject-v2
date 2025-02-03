@@ -19,6 +19,10 @@ video_url_input = st.text_input("Enter the YouTube video URL:")
 if 'monitoring' not in st.session_state:
     st.session_state.monitoring = False
 
+if st.button("Pause Chat Monitoring"):
+    st.session_state.monitoring = False
+    st.write("Chat monitoring paused. Click 'Start Chat Monitoring' to resume.")
+
 if st.button("Start Chat Monitoring"):
     if video_url_input:
         # Extract VIDEO_ID from the URL
@@ -86,6 +90,3 @@ if st.button("Start Chat Monitoring"):
         st.error("Please enter a valid YouTube video URL.")
 
 # Button to pause the chat monitoring
-if st.button("Pause Chat Monitoring"):
-    st.session_state.monitoring = False
-    st.write("Chat monitoring paused. Click 'Start Chat Monitoring' to resume.")
