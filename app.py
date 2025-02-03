@@ -43,10 +43,12 @@ if st.button("Start Chat Monitoring"):
             # Create a placeholder for chat messages
             chat_placeholder = st.empty()
 
+            # Initialize a list to store messages
+            all_messages = []
+
             while True:
                 chat_response = requests.get(chat_url, params=chat_params).json()
                 if "items" in chat_response:
-                    messages = []
                     for item in chat_response["items"]:
                         author = item["authorDetails"]["displayName"]
                         message = item["snippet"]["displayMessage"]
@@ -58,14 +60,17 @@ if st.button("Start Chat Monitoring"):
 
                         # Coloring text based on classification
                         if output[0] == 0:
-                            messages.append(f"<span style='color:white;'>{author} : <span style='color:red;'>{message}</span></span>")
+                            formatted_message = f"<span style='color:white;'>{author} : <span style='color:red;'>{message}</span></span>"
                         elif output[0] == 1:
-                            messages.append(f"<span style='color:white;'>{author} : <span style='color:yellow;'>{message}</span></span>")
+                            formatted_message = f"<span style='color:white;'>{author} : <span style='color:yellow;'>{message}</span></span>"
                         elif output[0] == 2:
-                            messages.append(f"<span style='color:white;'>{author} : <span style='color:green;'>{message}</span></span>")
+                            formatted_message = f"<span style='color:white;'>{author} : <span style='color:green;'>{message}</span></span>"
 
-                    # Update the chat placeholder with new messages
-                    chat_placeholder.markdown("<br>".join(messages), unsafe_allow_html=True)
+                        # Add the formatted message to the list
+                        all_messages.append(formatted_message)
+
+                    # Reverse the order of messages to show the newest on top
+                    chat_placeholder.markdown("<br>".join(reversed(all_messages)), unsafe_allow_html=True)
 
                 time.sleep(2)  # Wait before fetching new messages
         else:
