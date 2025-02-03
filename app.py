@@ -12,7 +12,7 @@ with open("tfidf_vectorizer.sav", "rb") as f:
 # Streamlit app
 st.title("YouTube Live Chat Classifier")
 
-API_KEY = "AIzaSyAiggkZTjKRGd_3pYRTJIe-08QOjfnHYgI"
+API_KEY = "AIzaSyDk6Sv0xXOQyqm78sBVZSVHqrRrZHFwoGA"
 video_url_input = st.text_input("Enter the YouTube video URL:")
 
 # Initialize a session state variable to control the chat monitoring
