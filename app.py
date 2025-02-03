@@ -27,7 +27,7 @@ rainbow_line = """
     <hr style="height: 5px; border: none; background: linear-gradient(to right, 
         red, orange, yellow, green, blue, indigo, violet);">
     """
-    st.markdown(rainbow_line, unsafe_allow_html=True)
+st.markdown(rainbow_line, unsafe_allow_html=True)
 
 if st.button("Start Chat Monitoring"):
     if video_url_input:
