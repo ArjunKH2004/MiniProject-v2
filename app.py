@@ -23,13 +23,14 @@ if st.button("Pause Chat Monitoring"):
     st.session_state.monitoring = False
     st.write("Chat monitoring paused. Click 'Start Chat Monitoring' to resume.")
 
-rainbow_line = """
+
+
+if st.button("Start Chat Monitoring"):
+    rainbow_line = """
     <hr style="height: 5px; border: none; background: linear-gradient(to right, 
         red, orange, yellow, green, blue, indigo, violet);">
     """
-st.markdown(rainbow_line, unsafe_allow_html=True)
-
-if st.button("Start Chat Monitoring"):
+    st.markdown(rainbow_line, unsafe_allow_html=True)
     if video_url_input:
         # Extract VIDEO_ID from the URL
         VIDEO_ID = video_url_input.split('v=')[1].split('&')[0] if 'v=' in video_url_input else video_url_input.split('/')[-1]
