@@ -18,7 +18,7 @@ video_url_input = st.text_input("Enter the YouTube video URL:")
 if st.button("Start Chat Monitoring"):
     if video_url_input:
         # Extract VIDEO_ID from the URL
-        VIDEO_ID = video_url_input.strip("https://www.youtube.com/watch?v=").strip()
+        VIDEO_ID = video_url_input.split('v=')[1].split('&')[0] if 'v=' in video_url_input else video_url_input.split('/')[-1]
 
         video_url = "https://www.googleapis.com/youtube/v3/videos"
         video_params = {
@@ -58,11 +58,11 @@ if st.button("Start Chat Monitoring"):
 
                         # Coloring text based on classification
                         if output[0] == 0:
-                            messages.append(f"<span style='color:red;'>{author} : {message}</span>")
+                            messages.append(f"<span style='color:white;'>{author} : <span style='color:red;'>{message}</span></span>")
                         elif output[0] == 1:
-                            messages.append(f"<span style='color:yellow;'>{author} : {message}</span>")
+                            messages.append(f"<span style='color:white;'>{author} : <span style='color:yellow;'>{message}</span></span>")
                         elif output[0] == 2:
-                            messages.append(f"<span style='color:green;'>{author} : {message}</span>")
+                            messages.append(f"<span style='color:white;'>{author} : <span style='color:green;'>{message}</span></span>")
 
                     # Update the chat placeholder with new messages
                     chat_placeholder.markdown("<br>".join(messages), unsafe_allow_html=True)
