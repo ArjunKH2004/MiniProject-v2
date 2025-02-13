@@ -2,6 +2,7 @@ import requests
 import time
 import pickle
 import streamlit as st
+from tfIdfInheritVectorizer.feature_extraction.vectorizer import TFIDFVectorizer
 
 with open("yt_ai_classifier_model_2.sav", "rb") as f:
     model = pickle.load(f)
