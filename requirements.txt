@@ -2,3 +2,4 @@ streamlit
 requests
 colorama
 scikit-learn
+tfIdfInheritVectorize
