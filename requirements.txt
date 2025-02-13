@@ -2,4 +2,4 @@ streamlit
 requests
 colorama
 scikit-learn
-tfIdfInheritVectorizer.feature_extraction.vectorizer
+TFIDFVectorizer
