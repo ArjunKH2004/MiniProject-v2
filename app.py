@@ -11,7 +11,7 @@ with open("tfidf_vectorizer.sav", "rb") as f:
 
 st.title("YouTube Live Chat Classifier")
 
-API_KEY = "AIzaSyDk6Sv0xXOQyqm78sBVZSVHqrRrZHFwoGA"
+API_KEY = "AIzaSyDKl-UYCSfN16Qs4sCMxMD2WXGQI7RutEM"
 video_url_input = st.text_input("Enter the YouTube video URL:")
 
 if 'monitoring' not in st.session_state:
