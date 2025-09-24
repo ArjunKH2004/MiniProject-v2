@@ -41,13 +41,18 @@ if st.button("Start Chat Monitoring"):
         response = requests.get(video_url, params=video_params).json()
 
         if "items" in response and response["items"]:
-            live_chat_id = response["items"][0]["liveStreamingDetails"]["activeLiveChatId"]
+            live_details = response["items"][0].get("liveStreamingDetails", {})
+            live_chat_id = live_details.get("activeLiveChatId")
+
+        if not live_chat_id:
+            st.error("This video is not currently live or chat is disabled.")
+        else:
             chat_url = "https://www.googleapis.com/youtube/v3/liveChat/messages"
             chat_params = {
                 "liveChatId": live_chat_id,
                 "part": "snippet,authorDetails",
                 "key": API_KEY
-            }
+                }
 
             st.write("Monitoring live chat...")
             chat_placeholder = st.empty()
