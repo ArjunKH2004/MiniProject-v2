@@ -11,7 +11,7 @@ with open("tfidf_vectorizer.sav", "rb") as f:
 
 st.title("YouTube Live Chat Classifier")
 
-API_KEY = "AIzaSyDKl-UYCSfN16Qs4sCMxMD2WXGQI7RutEM"
+API_KEY = "AIzaSyDk6Sv0xXOQyqm78sBVZSVHqrRrZHFwoGA"
 video_url_input = st.text_input("Enter the YouTube video URL:")
 
 if 'monitoring' not in st.session_state:
@@ -41,18 +41,13 @@ if st.button("Start Chat Monitoring"):
         response = requests.get(video_url, params=video_params).json()
 
         if "items" in response and response["items"]:
-            live_details = response["items"][0].get("liveStreamingDetails", {})
-            live_chat_id = live_details.get("activeLiveChatId")
-
-        if not live_chat_id:
-            st.error("This video is not currently live or chat is disabled.")
-        else:
+            live_chat_id = response["items"][0]["liveStreamingDetails"]["activeLiveChatId"]
             chat_url = "https://www.googleapis.com/youtube/v3/liveChat/messages"
             chat_params = {
                 "liveChatId": live_chat_id,
                 "part": "snippet,authorDetails",
                 "key": API_KEY
-                }
+            }
 
             st.write("Monitoring live chat...")
             chat_placeholder = st.empty()
@@ -83,5 +78,5 @@ if st.button("Start Chat Monitoring"):
                 time.sleep(2)  
         else:
             st.error("No live chat available for this video.")
-        else:
-            st.error("Please enter a valid YouTube video URL.")
+    else:
+        st.error("Please enter a valid YouTube video URL.")
